@@ -1,0 +1,57 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+@layer base {
+  html {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    /* Anchor 1rem = 16px so text-xs/sm/base map cleanly to 12/14/16px */
+    font-size: 16px;
+  }
+
+  body {
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+    /* Be Vietnam Pro as the default sans-serif for all UI text */
+    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+    font-size: 1rem; /* 16px */
+    /* Subtle cream base so bare body areas feel warm */
+    background-color: theme('colors.sand.50');
+    color: theme('colors.sand.900');
+    font-feature-settings: 'kern' 1, 'liga' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * {
+    min-width: 0;
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  button,
+  a {
+    touch-action: manipulation;
+  }
+
+  /* Smooth selection colour */
+  ::selection {
+    background-color: theme('colors.brand.100');
+    color: theme('colors.brand.700');
+  }
+}
+
+@layer utilities {
+  /* Utility for elegant letter-spacing on serif headings */
+  .tracking-display {
+    letter-spacing: -0.02em;
+  }
+}
