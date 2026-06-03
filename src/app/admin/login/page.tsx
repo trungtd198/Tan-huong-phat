@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { getCurrentAdminUser } from '@/features/admin/auth/guards';
 
 import { loginAdmin } from './actions';
+import { LoginSubmitButton } from './login-submit-button';
 
 export const dynamic = 'force-dynamic';
 
@@ -52,12 +53,7 @@ const AdminLoginPage = async ({ searchParams }: AdminLoginPageProps) => {
             className="mt-2 h-11 w-full rounded-md border border-sand-300 px-3 text-sm outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-300/40"
           />
         </label>
-        <button
-          type="submit"
-          className="mt-6 h-11 w-full rounded-md bg-espresso-900 px-4 text-sm font-bold text-white transition hover:bg-espresso-800"
-        >
-          Đăng nhập
-        </button>
+        <LoginSubmitButton />
       </form>
     </main>
   );

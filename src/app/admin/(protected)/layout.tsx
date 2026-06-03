@@ -29,9 +29,10 @@ const AdminProtectedLayout = async ({
   }).format(new Date());
 
   return (
-    <div className="min-h-screen bg-sand-100 text-sand-900 md:flex">
+    <div className="flex h-screen overflow-hidden bg-sand-100 text-sand-900">
       <AdminToaster />
-      <aside className="flex w-full flex-col justify-between bg-espresso-900 p-6 text-white md:sticky md:top-0 md:h-screen md:w-72 md:shrink-0 md:overflow-y-auto">
+      {/* ── Sidebar ── fixed height, scrollable internally if needed */}
+      <aside className="flex w-72 shrink-0 flex-col justify-between overflow-y-auto bg-espresso-900 p-6 text-white">
         <div>
           <Link
             href="/admin"
@@ -79,8 +80,10 @@ const AdminProtectedLayout = async ({
           </Link>
         </div>
       </aside>
-      <div className="min-w-0 flex-1">
-        <header className="border-b border-gold-500/20 bg-sand-100/80 px-4 py-6 sm:px-6 lg:px-10">
+
+      {/* ── Content column ── scrolls independently */}
+      <div className="flex min-w-0 flex-1 flex-col overflow-y-auto">
+        <header className="sticky top-0 z-10 border-b border-gold-500/20 bg-sand-100/95 px-4 py-6 backdrop-blur-sm sm:px-6 lg:px-10">
           <div className="mx-auto flex max-w-7xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-gold-600">
@@ -95,7 +98,7 @@ const AdminProtectedLayout = async ({
             </p>
           </div>
         </header>
-        <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-10">
+        <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-10">
           {children}
         </main>
       </div>
