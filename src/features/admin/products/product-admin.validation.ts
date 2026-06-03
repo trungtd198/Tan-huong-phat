@@ -8,6 +8,8 @@ export type ProductAdminFormPayload = {
   description: string;
   ingredients: string | null;
   benefits: string[];
+  howToUse: string | null;
+  warnings: string | null;
   featured: boolean;
   status: ProductStatus;
   sortOrder: number;
@@ -15,6 +17,7 @@ export type ProductAdminFormPayload = {
   seoDescription: string | null;
   coverImageFile: File | null;
   imageFiles: File[];
+  removeImageIds: string[];
 };
 
 const getString = (formData: FormData, key: string) =>
@@ -66,6 +69,12 @@ const getOptionalFiles = (formData: FormData, key: string) =>
     .getAll(key)
     .filter((value): value is File => value instanceof File && value.size > 0);
 
+const getStringList = (formData: FormData, key: string) =>
+  formData
+    .getAll(key)
+    .map((value) => String(value).trim())
+    .filter(Boolean);
+
 export const parseProductAdminFormData = (
   formData: FormData,
 ): ProductAdminFormPayload => {
@@ -83,6 +92,8 @@ export const parseProductAdminFormData = (
     description: getRequiredString(formData, 'description'),
     ingredients: getOptionalString(formData, 'ingredients'),
     benefits: parseLines(getString(formData, 'benefits')),
+    howToUse: getOptionalString(formData, 'howToUse'),
+    warnings: getOptionalString(formData, 'warnings'),
     featured: getBoolean(formData, 'featured'),
     status: statusValue as ProductStatus,
     sortOrder: getInt(formData, 'sortOrder'),
@@ -90,5 +101,6 @@ export const parseProductAdminFormData = (
     seoDescription: getOptionalString(formData, 'seoDescription'),
     coverImageFile: getOptionalFile(formData, 'coverImageFile'),
     imageFiles: getOptionalFiles(formData, 'imageFiles'),
+    removeImageIds: getStringList(formData, 'removeImageIds'),
   };
 };

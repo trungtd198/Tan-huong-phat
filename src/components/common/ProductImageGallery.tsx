@@ -19,14 +19,14 @@ const ProductImageGallery = ({ name, images }: ProductImageGalleryProps) => {
 
   return (
     <div className="space-y-4">
-      <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-white shadow-md">
+      <div className="group relative flex min-h-[380px] items-center justify-center overflow-hidden rounded-2xl border border-gold-500/15 bg-white p-8 shadow-sm sm:min-h-[500px]">
         <Image
           src={selectedImage}
           alt=""
           fill
           aria-hidden="true"
           sizes="(min-width: 1024px) 48vw, 100vw"
-          className="scale-110 object-cover opacity-30 blur-2xl brightness-95"
+          className="scale-110 object-cover opacity-20 blur-2xl brightness-95"
           priority
         />
         <Image
@@ -34,13 +34,13 @@ const ProductImageGallery = ({ name, images }: ProductImageGalleryProps) => {
           alt={name}
           fill
           sizes="(min-width: 1024px) 48vw, 100vw"
-          className="z-10 object-contain p-6 sm:p-10"
+          className="z-10 object-contain p-8 transition-transform duration-700 group-hover:scale-105 sm:p-12"
           priority
         />
       </div>
 
       {galleryImages.length > 1 ? (
-        <div className="flex gap-3 overflow-x-auto pb-1">
+        <div className="flex items-center justify-center gap-3 overflow-x-auto pb-1">
           {galleryImages.map((image, index) => (
             <button
               key={image}
@@ -48,18 +48,18 @@ const ProductImageGallery = ({ name, images }: ProductImageGalleryProps) => {
               aria-label={`Xem ảnh ${index + 1}`}
               onClick={() => setSelectedIndex(index)}
               className={[
-                'relative aspect-square w-20 shrink-0 overflow-hidden rounded-xl bg-white transition',
+                'relative aspect-square w-16 shrink-0 overflow-hidden rounded-xl bg-white p-1 transition',
                 index === selectedIndex
-                  ? 'ring-2 ring-gold-500 ring-offset-2'
-                  : 'opacity-60 ring-1 ring-sand-200 hover:opacity-100',
+                  ? 'border-2 border-gold-500'
+                  : 'border border-gold-500/15 opacity-70 hover:border-gold-500 hover:opacity-100',
               ].join(' ')}
             >
               <Image
                 src={image}
                 alt={`${name} ảnh ${index + 1}`}
                 fill
-                sizes="80px"
-                className="object-contain p-1.5"
+                sizes="64px"
+                className="rounded-lg object-contain p-1"
               />
             </button>
           ))}

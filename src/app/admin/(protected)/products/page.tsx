@@ -1,5 +1,5 @@
 import { ProductStatus } from '@prisma/client';
-import { Archive, Eye, Pencil, Plus, Search } from 'lucide-react';
+import { Archive, ExternalLink, Eye, Pencil, Plus, Search } from 'lucide-react';
 import Link from 'next/link';
 
 import {
@@ -25,16 +25,26 @@ type AdminProductsPageProps = {
 };
 
 const statusClassNames = {
-  DRAFT: 'bg-sand-100 text-sand-700',
-  PUBLISHED: 'bg-green-50 text-green-700',
-  ARCHIVED: 'bg-red-50 text-red-700',
+  IN_STOCK: 'bg-green-50 text-green-700',
+  OUT_OF_STOCK: 'bg-red-50 text-red-700',
+  COMING_SOON: 'bg-amber-50 text-amber-700',
 } satisfies Record<ProductStatus, string>;
 
 const statusLabels = {
-  DRAFT: 'Bản nháp',
-  PUBLISHED: 'Đã xuất bản',
-  ARCHIVED: 'Đã lưu trữ',
+  IN_STOCK: 'Còn hàng',
+  OUT_OF_STOCK: 'Hết hàng',
+  COMING_SOON: 'Sắp ra mắt',
 } satisfies Record<ProductStatus, string>;
+
+const statusDotClassNames = {
+  IN_STOCK: 'bg-green-500',
+  OUT_OF_STOCK: 'bg-red-500',
+  COMING_SOON: 'bg-amber-500',
+} satisfies Record<ProductStatus, string>;
+
+const getProductCoverImage = (
+  images: Array<{ publicUrl: string; isCover: boolean }>,
+) => images.find((image) => image.isCover)?.publicUrl ?? images[0]?.publicUrl;
 
 const AdminProductsPage = async ({ searchParams }: AdminProductsPageProps) => {
   const filters = {
@@ -42,22 +52,33 @@ const AdminProductsPage = async ({ searchParams }: AdminProductsPageProps) => {
     status: getProductStatusFromSearch(searchParams?.status),
     lineId: searchParams?.lineId || undefined,
   };
-  const [products, lines, totalProducts, publishedProducts, draftProducts] =
-    await Promise.all([
-      getAdminProducts(filters),
-      getAdminProductLines(),
-      db.product.count(),
-      db.product.count({
-        where: {
-          status: ProductStatus.PUBLISHED,
-        },
-      }),
-      db.product.count({
-        where: {
-          status: ProductStatus.DRAFT,
-        },
-      }),
-    ]);
+  const [
+    products,
+    lines,
+    totalProducts,
+    inStockProducts,
+    outOfStockProducts,
+    comingSoonProducts,
+  ] = await Promise.all([
+    getAdminProducts(filters),
+    getAdminProductLines(),
+    db.product.count(),
+    db.product.count({
+      where: {
+        status: ProductStatus.IN_STOCK,
+      },
+    }),
+    db.product.count({
+      where: {
+        status: ProductStatus.OUT_OF_STOCK,
+      },
+    }),
+    db.product.count({
+      where: {
+        status: ProductStatus.COMING_SOON,
+      },
+    }),
+  ]);
 
   return (
     <div className="space-y-8">
@@ -93,7 +114,7 @@ const AdminProductsPage = async ({ searchParams }: AdminProductsPageProps) => {
         </p>
       ) : null}
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <div className="rounded-lg border border-sand-200 bg-white p-5 shadow-sm">
           <p className="text-xs font-bold uppercase tracking-wider text-sand-500">
             Tổng sản phẩm
@@ -104,18 +125,26 @@ const AdminProductsPage = async ({ searchParams }: AdminProductsPageProps) => {
         </div>
         <div className="rounded-lg border border-green-100 bg-white p-5 shadow-sm">
           <p className="text-xs font-bold uppercase tracking-wider text-green-700">
-            Đã xuất bản
+            Còn hàng
           </p>
           <p className="mt-2 text-3xl font-bold text-green-700">
-            {publishedProducts}
+            {inStockProducts}
+          </p>
+        </div>
+        <div className="rounded-lg border border-red-100 bg-white p-5 shadow-sm">
+          <p className="text-xs font-bold uppercase tracking-wider text-red-700">
+            Hết hàng
+          </p>
+          <p className="mt-2 text-3xl font-bold text-red-700">
+            {outOfStockProducts}
           </p>
         </div>
         <div className="rounded-lg border border-amber-100 bg-white p-5 shadow-sm">
           <p className="text-xs font-bold uppercase tracking-wider text-amber-700">
-            Bản nháp
+            Sắp ra mắt
           </p>
           <p className="mt-2 text-3xl font-bold text-amber-700">
-            {draftProducts}
+            {comingSoonProducts}
           </p>
         </div>
       </div>
@@ -169,8 +198,8 @@ const AdminProductsPage = async ({ searchParams }: AdminProductsPageProps) => {
               <tr>
                 <th className="px-4 py-3">Sản phẩm</th>
                 <th className="px-4 py-3">Dòng</th>
+                <th className="px-4 py-3">Kích cỡ</th>
                 <th className="px-4 py-3">Trạng thái</th>
-                <th className="px-4 py-3">Cập nhật</th>
                 <th className="px-4 py-3 text-right">Thao tác</th>
               </tr>
             </thead>
@@ -178,30 +207,64 @@ const AdminProductsPage = async ({ searchParams }: AdminProductsPageProps) => {
               {products.map((product) => (
                 <tr key={product.id} className="align-top">
                   <td className="p-4">
-                    <p className="font-bold text-sand-900">{product.name}</p>
-                    <p className="mt-1 text-xs text-sand-500">
-                      /products/{product.line.slug}/{product.slug}
-                    </p>
+                    <div className="flex items-center gap-3">
+                      {getProductCoverImage(product.images) ? (
+                        <img
+                          src={getProductCoverImage(product.images)}
+                          alt={product.name}
+                          className="size-12 shrink-0 rounded-md border border-sand-200 bg-sand-100 object-cover"
+                        />
+                      ) : (
+                        <div className="flex size-12 shrink-0 items-center justify-center rounded-md border border-sand-200 bg-espresso-900 text-xs font-bold text-sand-100">
+                          THP
+                        </div>
+                      )}
+                      <div>
+                        <p className="font-bold text-sand-900">
+                          {product.name}
+                        </p>
+                        <p className="mt-1 text-xs text-sand-500">
+                          /products/{product.line.slug}/{product.slug}
+                        </p>
+                      </div>
+                    </div>
                   </td>
-                  <td className="p-4 text-sand-700">{product.line.name}</td>
+                  <td className="p-4 text-sand-700">
+                    {product.line.name}
+                    {product.line.isFeatured ? (
+                      <span className="ml-2 inline-flex rounded-md border border-gold-500/20 bg-sand-100 px-1.5 py-0.5 text-[10px] font-bold uppercase text-gold-600">
+                        Dòng nổi bật
+                      </span>
+                    ) : null}
+                  </td>
+                  <td className="p-4 font-semibold text-espresso-900">
+                    {product.size ?? 'Mặc định'}
+                  </td>
                   <td className="p-4">
                     <span
-                      className={`inline-flex rounded-md px-2 py-1 text-xs font-bold ${statusClassNames[product.status]}`}
+                      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold ${statusClassNames[product.status]}`}
                     >
+                      <span
+                        className={`size-1.5 rounded-full ${statusDotClassNames[product.status]}`}
+                      />
                       {statusLabels[product.status]}
                     </span>
                   </td>
-                  <td className="p-4 text-sand-700">
-                    {product.updatedAt.toLocaleDateString('vi-VN')}
-                  </td>
                   <td className="p-4">
                     <div className="flex justify-end gap-2">
+                      <Link
+                        href={`/admin/products/${product.id}?mode=view`}
+                        className="inline-flex size-9 items-center justify-center rounded-md border border-sand-300 text-sand-700 transition hover:bg-sand-100"
+                        title="Xem chi tiết"
+                      >
+                        <Eye className="size-4" />
+                      </Link>
                       <Link
                         href={`/products/${product.line.slug}/${product.slug}`}
                         className="inline-flex size-9 items-center justify-center rounded-md border border-sand-300 text-sand-700 transition hover:bg-sand-100"
                         title="Xem trang công khai"
                       >
-                        <Eye className="size-4" />
+                        <ExternalLink className="size-4" />
                       </Link>
                       <Link
                         href={`/admin/products/${product.id}`}
@@ -210,7 +273,7 @@ const AdminProductsPage = async ({ searchParams }: AdminProductsPageProps) => {
                       >
                         <Pencil className="size-4" />
                       </Link>
-                      {product.status !== ProductStatus.ARCHIVED ? (
+                      {product.status !== ProductStatus.OUT_OF_STOCK ? (
                         <form action={updateAdminProductStatus}>
                           <input
                             type="hidden"
@@ -220,12 +283,12 @@ const AdminProductsPage = async ({ searchParams }: AdminProductsPageProps) => {
                           <input
                             type="hidden"
                             name="status"
-                            value={ProductStatus.ARCHIVED}
+                            value={ProductStatus.OUT_OF_STOCK}
                           />
                           <button
                             type="submit"
                             className="inline-flex size-9 items-center justify-center rounded-md border border-sand-300 text-sand-700 transition hover:bg-sand-100"
-                            title="Lưu trữ"
+                            title="Đánh dấu hết hàng"
                           >
                             <Archive className="size-4" />
                           </button>

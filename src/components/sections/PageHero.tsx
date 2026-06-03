@@ -11,7 +11,7 @@ type PageHeroProps = {
 const PageHero = ({ title, subtitle, imageUrl, className }: PageHeroProps) => (
   <section
     className={cn(
-      'relative overflow-hidden bg-sand-100 py-20 sm:py-24 lg:py-28',
+      'relative overflow-hidden bg-sand-100 py-32 sm:py-40 lg:py-52 min-h-[28rem] sm:min-h-[34rem] lg:min-h-[42rem] flex items-center',
       imageUrl && 'bg-sand-900',
       className,
     )}
@@ -22,16 +22,26 @@ const PageHero = ({ title, subtitle, imageUrl, className }: PageHeroProps) => (
           src={imageUrl}
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 size-full object-cover opacity-25"
+          className="absolute inset-0 size-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-sand-50/85 to-sand-50" />
+        {/* Overlay tối nhẹ phía dưới để chữ dễ đọc, ảnh vẫn hiện rõ */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
       </>
     ) : null}
     <Container size="lg" className="relative text-center">
-      <Heading as="h1" className="text-sand-900">
+      <Heading
+        as="h1"
+        className={cn(imageUrl ? 'text-white drop-shadow-lg' : 'text-sand-900')}
+      >
         {title}
       </Heading>
-      <Paragraph size="lg" className="mx-auto mt-6 max-w-3xl text-sand-600">
+      <Paragraph
+        size="lg"
+        className={cn(
+          'mx-auto mt-6 max-w-3xl',
+          imageUrl ? 'text-white/90 drop-shadow' : 'text-sand-600',
+        )}
+      >
         {subtitle}
       </Paragraph>
     </Container>

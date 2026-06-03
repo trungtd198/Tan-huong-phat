@@ -32,7 +32,7 @@ const getPublishedAt = (
   status: ProductStatus,
   existingPublishedAt?: Date | null,
 ) => {
-  if (status !== ProductStatus.PUBLISHED) {
+  if (status !== ProductStatus.IN_STOCK) {
     return null;
   }
 
@@ -197,6 +197,28 @@ const uploadAdditionalImageFiles = async ({
   });
 };
 
+const deleteAdditionalImages = async ({
+  productId,
+  imageIds,
+}: {
+  productId: string;
+  imageIds: string[];
+}) => {
+  if (imageIds.length === 0) {
+    return;
+  }
+
+  await db.productImage.deleteMany({
+    where: {
+      productId,
+      id: {
+        in: imageIds,
+      },
+      isCover: false,
+    },
+  });
+};
+
 export const createAdminProduct = async (formData: FormData) => {
   await requireAdminUser();
 
@@ -217,6 +239,8 @@ export const createAdminProduct = async (formData: FormData) => {
       description: payload.description,
       ingredients: payload.ingredients,
       benefits: payload.benefits,
+      howToUse: payload.howToUse,
+      warnings: payload.warnings,
       featured: payload.featured,
       status: payload.status,
       sortOrder: payload.sortOrder,
@@ -251,7 +275,7 @@ export const createAdminProduct = async (formData: FormData) => {
 
   revalidateProductPaths([product.slug]);
   revalidatePath(`/products/${product.line.slug}/${product.slug}`);
-  redirect(`/admin/products/${product.id}?saved=1`);
+  redirect(`/admin/products/${product.id}?mode=view&saved=1`);
 };
 
 export const updateAdminProduct = async (formData: FormData) => {
@@ -293,6 +317,8 @@ export const updateAdminProduct = async (formData: FormData) => {
       description: payload.description,
       ingredients: payload.ingredients,
       benefits: payload.benefits,
+      howToUse: payload.howToUse,
+      warnings: payload.warnings,
       featured: payload.featured,
       status: payload.status,
       sortOrder: payload.sortOrder,
@@ -318,6 +344,10 @@ export const updateAdminProduct = async (formData: FormData) => {
     name: product.name,
     coverImageFile: payload.coverImageFile,
   });
+  await deleteAdditionalImages({
+    productId: product.id,
+    imageIds: payload.removeImageIds,
+  });
   await uploadAdditionalImageFiles({
     productId: product.id,
     productSlug: product.slug,
@@ -330,7 +360,7 @@ export const updateAdminProduct = async (formData: FormData) => {
     `/products/${existingProduct.line.slug}/${existingProduct.slug}`,
   );
   revalidatePath(`/products/${product.line.slug}/${product.slug}`);
-  redirect(`/admin/products/${product.id}?saved=1`);
+  redirect(`/admin/products/${product.id}?mode=view&saved=1`);
 };
 
 export const updateAdminProductStatus = async (formData: FormData) => {
@@ -522,7 +552,7 @@ export const importLegacyProductData = async () => {
           ingredients: product.ingredients,
           benefits: product.benefits,
           featured: product.featured ?? false,
-          status: ProductStatus.PUBLISHED,
+          status: ProductStatus.IN_STOCK,
           sortOrder: productIndex,
           publishedAt: new Date(),
         },
@@ -538,7 +568,7 @@ export const importLegacyProductData = async () => {
           ingredients: product.ingredients,
           benefits: product.benefits,
           featured: product.featured ?? false,
-          status: ProductStatus.PUBLISHED,
+          status: ProductStatus.IN_STOCK,
           sortOrder: productIndex,
           publishedAt: new Date(),
         },

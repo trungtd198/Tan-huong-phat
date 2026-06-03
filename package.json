@@ -29,6 +29,8 @@
     "prisma": "^6.16.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "resend": "^6.12.4",
+    "sonner": "^2.0.7",
     "styled-jsx-plugin-postcss": "^4.0.1",
     "swiper": "^12.2.0",
     "tsx": "^4.22.2"
@@ -37,6 +39,7 @@
     "@next/bundle-analyzer": "^14.1.0",
     "@types/node": "^20.11.10",
     "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
     "@typescript-eslint/eslint-plugin": "^6.19.1",
     "@typescript-eslint/parser": "^6.19.1",
     "autoprefixer": "^10.4.17",

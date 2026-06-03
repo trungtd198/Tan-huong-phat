@@ -1,4 +1,4 @@
-import { type Prisma, ProductStatus } from '@prisma/client';
+import { type Prisma } from '@prisma/client';
 
 import { productGroups as staticProductGroups } from '@/data/reference-layout';
 import { db } from '@/lib/db';
@@ -13,9 +13,6 @@ const DEFAULT_PRODUCT_IMAGE =
 
 const lineInclude = {
   products: {
-    where: {
-      status: ProductStatus.PUBLISHED,
-    },
     orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
     include: {
       images: {

@@ -9,9 +9,9 @@ datasource db {
 }
 
 enum ProductStatus {
-  DRAFT
-  PUBLISHED
-  ARCHIVED
+  IN_STOCK
+  OUT_OF_STOCK
+  COMING_SOON
 }
 
 enum AdminRole {
@@ -113,7 +113,7 @@ model Product {
   howToUse           String?
   warnings           String?
   featured           Boolean             @default(false)
-  status             ProductStatus       @default(DRAFT)
+  status             ProductStatus       @default(IN_STOCK)
   sortOrder          Int                 @default(0)
   seoTitle           String?
   seoDescription     String?

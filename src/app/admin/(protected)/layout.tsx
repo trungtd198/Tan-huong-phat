@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 
 import { AdminShellNav } from '@/features/admin/admin-shell-nav';
+import { AdminToaster } from '@/features/admin/admin-toaster';
 import { requireAdminUser } from '@/features/admin/auth/guards';
 import { db } from '@/lib/db';
 
@@ -29,6 +30,7 @@ const AdminProtectedLayout = async ({
 
   return (
     <div className="min-h-screen bg-sand-100 text-sand-900 md:flex">
+      <AdminToaster />
       <aside className="flex w-full flex-col justify-between bg-espresso-900 p-6 text-white md:min-h-screen md:w-72 md:shrink-0">
         <div>
           <Link

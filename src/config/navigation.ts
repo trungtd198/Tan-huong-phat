@@ -37,12 +37,12 @@ export const footerLinkGroups: FooterLinkGroup[] = [
 export const socialLinks: SocialLink[] = [
   {
     label: 'Facebook',
-    href: 'https://facebook.com/tanhuongphat',
+    href: 'https://facebook.com',
     shortLabel: 'FB',
   },
   {
     label: 'Instagram',
-    href: 'https://instagram.com/tanhuongphat',
+    href: 'https://instagram.com',
     shortLabel: 'IG',
   },
   {

@@ -75,6 +75,15 @@ const getBannerTarget = (formData: FormData) => {
   return value as BannerPlacement;
 };
 
+const bannerPlacementLabels = {
+  HOME_HERO: 'Hero trang chủ',
+  PRODUCTS_HERO: 'Hero trang sản phẩm',
+  ABOUT_HERO: 'Hero trang giới thiệu',
+} satisfies Record<BannerPlacement, string>;
+
+const getBannerTitle = (formData: FormData, placement: BannerPlacement) =>
+  getOptionalString(formData, 'title') ?? bannerPlacementLabels[placement];
+
 const getImageFileExtension = (file: File) => {
   const extensionFromName = path.extname(file.name);
 
@@ -266,6 +275,7 @@ export const saveAdminBanner = async (formData: FormData) => {
   await requireAdminUser();
 
   const target = getBannerTarget(formData);
+  const bannerId = getOptionalString(formData, 'bannerId');
 
   if (target === 'PRODUCT_LINE') {
     await updateAdminProductLineBanner(formData);
@@ -278,24 +288,42 @@ export const saveAdminBanner = async (formData: FormData) => {
       imageFile,
     });
 
-    if (!imageUrl) {
+    const existingBanner = bannerId
+      ? await db.banner.findUnique({
+          where: {
+            id: bannerId,
+          },
+          select: {
+            id: true,
+            imageUrl: true,
+            placement: true,
+          },
+        })
+      : null;
+    const resolvedImageUrl = imageUrl ?? existingBanner?.imageUrl;
+
+    if (!resolvedImageUrl) {
       throw new Error('Banner cần có ảnh');
     }
 
-    const existing = await db.banner.findFirst({
-      where: {
-        placement,
-      },
-      orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
-      select: {
-        id: true,
-      },
-    });
+    const existing =
+      existingBanner ??
+      (await db.banner.findFirst({
+        where: {
+          placement,
+        },
+        orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
+        select: {
+          id: true,
+          imageUrl: true,
+          placement: true,
+        },
+      }));
     const data = {
       placement,
-      title: getRequiredString(formData, 'title'),
+      title: getBannerTitle(formData, placement),
       subtitle: getOptionalString(formData, 'subtitle'),
-      imageUrl,
+      imageUrl: resolvedImageUrl,
       ctaLabel: null,
       ctaHref: null,
       isActive: getBoolean(formData, 'isActive'),
@@ -309,6 +337,7 @@ export const saveAdminBanner = async (formData: FormData) => {
         },
         data,
       });
+      revalidateBannerPaths(existing.placement);
     } else {
       await db.banner.create({
         data,

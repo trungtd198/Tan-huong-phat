@@ -41,7 +41,11 @@ const ProductsPage = async () => {
                 </div>
                 <div className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                   {group.products.map((product) => (
-                    <CatalogProductCard key={product.slug} product={product} />
+                    <CatalogProductCard
+                      key={product.slug}
+                      href={`/products/${group.slug}/${product.slug}`}
+                      product={product}
+                    />
                   ))}
                 </div>
               </section>

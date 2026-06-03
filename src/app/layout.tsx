@@ -1,8 +1,9 @@
 import '@/styles/global.css';
 
 import type { Metadata } from 'next';
-import type { ReactNode } from 'react';
+import { type ReactNode, Suspense } from 'react';
 
+import RouteLoadingIndicator from '@/components/layouts/RouteLoadingIndicator';
 import { AppConfig } from '@/constants/AppConfig';
 
 const fontsHref =
@@ -32,7 +33,12 @@ const RootLayout = ({ children }: RootLayoutProps) => (
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
       <link rel="stylesheet" href={fontsHref} />
     </head>
-    <body>{children}</body>
+    <body>
+      {children}
+      <Suspense fallback={null}>
+        <RouteLoadingIndicator />
+      </Suspense>
+    </body>
   </html>
 );
 

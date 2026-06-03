@@ -1,5 +1,7 @@
-import { Layers3, Pencil, Plus, Star, Trash2 } from 'lucide-react';
+import { Layers3, Pencil, Plus, Star, Trash2, X } from 'lucide-react';
 
+import { AdminStatusToast } from '@/features/admin/admin-status-toast';
+import { AdminSubmitButton } from '@/features/admin/admin-submit-button';
 import {
   createAdminProductLine,
   deleteAdminProductLine,
@@ -7,6 +9,7 @@ import {
   updateAdminProductLineFeatured,
 } from '@/features/admin/products/product-admin.actions';
 import { getAdminProductLines } from '@/features/admin/products/product-admin.queries';
+import { ProductLineDialogCloseButton } from '@/features/admin/products/product-line-dialog-close-button';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,23 +34,36 @@ const getJsonList = (value: unknown) =>
     ? value.filter((item): item is string => typeof item === 'string')
     : [];
 
-const statusMessage = (
+const statusToast = (
   searchParams?: AdminProductLinesPageProps['searchParams'],
 ) => {
   if (searchParams?.saved) {
-    return 'Đã lưu dòng sản phẩm.';
+    return {
+      title: 'Đã lưu dòng sản phẩm',
+      description: 'Thông tin dòng sản phẩm đã được cập nhật.',
+    };
   }
 
   if (searchParams?.featured) {
-    return 'Đã cập nhật dòng sản phẩm nổi bật.';
+    return {
+      title: 'Đã cập nhật dòng nổi bật',
+      description: 'Thiết lập dòng sản phẩm nổi bật đã được lưu.',
+    };
   }
 
   if (searchParams?.deleted) {
-    return 'Đã xóa dòng sản phẩm.';
+    return {
+      title: 'Đã xóa dòng sản phẩm',
+      description: 'Dòng sản phẩm đã được xóa khỏi hệ thống.',
+    };
   }
 
   if (searchParams?.delete === 'blocked') {
-    return 'Không thể xóa dòng sản phẩm đang có sản phẩm liên kết.';
+    return {
+      title: 'Không thể xóa dòng sản phẩm',
+      description: 'Dòng sản phẩm đang có sản phẩm liên kết.',
+      type: 'warning' as const,
+    };
   }
 
   return null;
@@ -105,17 +121,6 @@ const ProductLineFields = ({
         name="benefits"
         defaultValue={getJsonList(line?.benefits).join('\n')}
         rows={3}
-        className={`mt-2 ${fieldClassName}`}
-      />
-    </label>
-    <label className="block">
-      <span className="text-xs font-bold uppercase tracking-wider text-sand-500">
-        URL ảnh hiện có
-      </span>
-      <input
-        name="imageUrl"
-        defaultValue={line?.imageUrl ?? ''}
-        placeholder="/images/products/..."
         className={`mt-2 ${fieldClassName}`}
       />
     </label>
@@ -219,8 +224,8 @@ const ProductLineCard = ({ line }: { line: ProductLineRecord }) => (
             name="isFeatured"
             value={line.isFeatured ? 'false' : 'true'}
           />
-          <button
-            type="submit"
+          <AdminSubmitButton
+            pendingTitle="Đang cập nhật"
             className={`rounded-md border px-3 py-2 text-xs font-bold transition ${
               line.isFeatured
                 ? 'border-amber-200 text-amber-700 hover:bg-amber-50'
@@ -228,7 +233,7 @@ const ProductLineCard = ({ line }: { line: ProductLineRecord }) => (
             }`}
           >
             {line.isFeatured ? 'Bỏ nổi bật' : 'Thiết lập nổi bật'}
-          </button>
+          </AdminSubmitButton>
         </form>
         <div className="flex items-center gap-2">
           <details className="group">
@@ -240,32 +245,43 @@ const ProductLineCard = ({ line }: { line: ProductLineRecord }) => (
                 action={updateAdminProductLine}
                 className="mx-auto mt-8 max-w-2xl rounded-lg border border-gold-300 bg-white p-5 shadow-xl"
               >
-                <h3 className="text-lg font-bold text-espresso-900">
-                  Chỉnh sửa dòng sản phẩm
-                </h3>
+                <div className="flex items-center justify-between gap-4">
+                  <h3 className="text-lg font-bold text-espresso-900">
+                    Chỉnh sửa dòng sản phẩm
+                  </h3>
+                  <ProductLineDialogCloseButton
+                    title="Đóng"
+                    className="inline-flex size-9 items-center justify-center rounded-md border border-sand-300 text-sand-600 transition hover:bg-sand-100 hover:text-espresso-900"
+                  >
+                    <X className="size-4" />
+                  </ProductLineDialogCloseButton>
+                </div>
                 <div className="mt-5">
                   <ProductLineFields line={line} />
                 </div>
                 <div className="mt-5 flex justify-end gap-3 border-t border-sand-100 pt-4">
-                  <button
-                    type="submit"
+                  <ProductLineDialogCloseButton className="inline-flex items-center justify-center rounded-md border border-sand-300 bg-white px-4 py-2 text-sm font-bold text-sand-700 transition hover:bg-sand-100">
+                    Đóng
+                  </ProductLineDialogCloseButton>
+                  <AdminSubmitButton
+                    pendingTitle="Đang lưu dòng sản phẩm"
                     className="rounded-md bg-espresso-900 px-4 py-2 text-sm font-bold text-white transition hover:bg-espresso-800"
                   >
                     Lưu thông tin
-                  </button>
+                  </AdminSubmitButton>
                 </div>
               </form>
             </div>
           </details>
           <form action={deleteAdminProductLine}>
             <input type="hidden" name="lineId" value={line.id} />
-            <button
-              type="submit"
+            <AdminSubmitButton
               className="inline-flex size-9 items-center justify-center rounded-md border border-red-200 text-red-600 transition hover:bg-red-50"
+              pendingTitle="Đang xóa dòng sản phẩm"
               title="Xóa dòng sản phẩm"
             >
               <Trash2 className="size-4" />
-            </button>
+            </AdminSubmitButton>
           </form>
         </div>
       </div>
@@ -277,10 +293,19 @@ const AdminProductLinesPage = async ({
   searchParams,
 }: AdminProductLinesPageProps) => {
   const lines = await getAdminProductLines();
-  const message = statusMessage(searchParams);
+  const toastStatus = statusToast(searchParams);
 
   return (
     <div className="space-y-8">
+      {toastStatus ? (
+        <AdminStatusToast
+          show
+          title={toastStatus.title}
+          description={toastStatus.description}
+          type={toastStatus.type}
+        />
+      ) : null}
+
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div className="flex items-center gap-4">
           <div className="rounded-lg border border-sand-200 bg-white p-3 text-gold-600 shadow-sm">
@@ -301,18 +326,6 @@ const AdminProductLinesPage = async ({
         </div>
       </div>
 
-      {message ? (
-        <p
-          className={`rounded-md border px-3 py-2 text-sm font-semibold ${
-            searchParams?.delete === 'blocked'
-              ? 'border-amber-200 bg-amber-50 text-amber-700'
-              : 'border-green-200 bg-green-50 text-green-700'
-          }`}
-        >
-          {message}
-        </p>
-      ) : null}
-
       <section className="rounded-lg border border-sand-200 bg-white p-5 shadow-sm">
         <div className="mb-5 flex items-center gap-2">
           <Plus className="size-5 text-gold-600" />
@@ -321,12 +334,12 @@ const AdminProductLinesPage = async ({
         <form action={createAdminProductLine}>
           <ProductLineFields nextSortOrder={lines.length} />
           <div className="mt-5 flex justify-end border-t border-sand-100 pt-4">
-            <button
-              type="submit"
+            <AdminSubmitButton
+              pendingTitle="Đang lưu dòng sản phẩm"
               className="rounded-md bg-espresso-900 px-4 py-2 text-sm font-bold text-white transition hover:bg-espresso-800"
             >
               Lưu thông tin
-            </button>
+            </AdminSubmitButton>
           </div>
         </form>
       </section>

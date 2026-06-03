@@ -62,44 +62,42 @@ const ProductDetailCard = ({
       </div>
 
       {/* ── Thumbnail strip ── */}
-      {images.length > 1 && (
-        <div className="scrollbar-thin flex gap-2 overflow-x-auto border-b border-sand-100 px-3 py-2">
-          {images.map((image, index) => (
-            <button
-              key={image}
-              type="button"
-              aria-label={`Xem ảnh ${index + 1}`}
-              onClick={() => setSelectedIndex(index)}
-              className={[
-                'relative aspect-square w-14 shrink-0 overflow-hidden rounded-lg bg-white transition-all duration-200',
-                index === selectedIndex
-                  ? 'ring-2 ring-gold-500 ring-offset-1 opacity-100'
-                  : 'opacity-50 hover:opacity-85 hover:ring-1 hover:ring-sand-300 hover:ring-offset-1',
-              ].join(' ')}
-            >
-              {/* Blurred thumbnail bg */}
-              <Image
-                src={image}
-                alt=""
-                fill
-                aria-hidden="true"
-                sizes="56px"
-                className="scale-110 object-cover opacity-40 blur-xl brightness-90"
-                priority
-              />
-              {/* Thumbnail image */}
-              <Image
-                src={image}
-                alt={`${product.name} ảnh ${index + 1}`}
-                fill
-                sizes="56px"
-                className="z-10 object-contain p-1"
-                priority
-              />
-            </button>
-          ))}
-        </div>
-      )}
+      <div className="scrollbar-thin flex gap-2 overflow-x-auto border-b border-sand-100 px-3 py-2">
+        {images.map((image, index) => (
+          <button
+            key={image}
+            type="button"
+            aria-label={`Xem ảnh ${index + 1}`}
+            onClick={() => setSelectedIndex(index)}
+            className={[
+              'relative aspect-square w-14 shrink-0 overflow-hidden rounded-lg bg-white transition-all duration-200',
+              index === selectedIndex
+                ? 'ring-2 ring-gold-500 ring-offset-1 opacity-100'
+                : 'opacity-50 hover:opacity-85 hover:ring-1 hover:ring-sand-300 hover:ring-offset-1',
+            ].join(' ')}
+          >
+            {/* Blurred thumbnail bg */}
+            <Image
+              src={image}
+              alt=""
+              fill
+              aria-hidden="true"
+              sizes="56px"
+              className="scale-110 object-cover opacity-40 blur-xl brightness-90"
+              priority
+            />
+            {/* Thumbnail image */}
+            <Image
+              src={image}
+              alt={`${product.name} ảnh ${index + 1}`}
+              fill
+              sizes="56px"
+              className="z-10 object-contain p-1"
+              priority
+            />
+          </button>
+        ))}
+      </div>
 
       {/* ── Product metadata ── */}
       <div className="flex flex-1 flex-col p-5">

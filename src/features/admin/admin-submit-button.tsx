@@ -1,15 +1,24 @@
 'use client';
 
 import { Loader2 } from 'lucide-react';
+import type { ReactNode } from 'react';
 import { useFormStatus } from 'react-dom';
 
-type ProductAdminSubmitButtonProps = {
-  children: string;
+type AdminSubmitButtonProps = {
+  children: ReactNode;
+  className: string;
+  pendingTitle?: string;
+  pendingDescription?: string;
+  title?: string;
 };
 
-export const ProductAdminSubmitButton = ({
+export const AdminSubmitButton = ({
   children,
-}: ProductAdminSubmitButtonProps) => {
+  className,
+  pendingTitle = 'Đang xử lý',
+  pendingDescription = 'Vui lòng chờ trong giây lát.',
+  title,
+}: AdminSubmitButtonProps) => {
   const { pending } = useFormStatus();
 
   return (
@@ -20,19 +29,18 @@ export const ProductAdminSubmitButton = ({
             <Loader2 className="size-8 animate-spin text-gold-500" />
             <div>
               <p className="text-sm font-bold uppercase tracking-wider">
-                Đang lưu sản phẩm
+                {pendingTitle}
               </p>
-              <p className="mt-2 text-xs text-white/65">
-                Vui lòng chờ trong giây lát.
-              </p>
+              <p className="mt-2 text-xs text-white/65">{pendingDescription}</p>
             </div>
           </div>
         </div>
       ) : null}
       <button
         type="submit"
+        title={title}
         disabled={pending}
-        className="inline-flex items-center justify-center rounded-md bg-espresso-900 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-espresso-800 disabled:cursor-not-allowed disabled:opacity-70"
+        className={`${className} disabled:cursor-not-allowed disabled:opacity-70`}
       >
         {children}
       </button>
@@ -40,4 +48,4 @@ export const ProductAdminSubmitButton = ({
   );
 };
 
-export type { ProductAdminSubmitButtonProps };
+export type { AdminSubmitButtonProps };
