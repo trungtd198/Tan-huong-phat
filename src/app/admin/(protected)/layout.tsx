@@ -31,7 +31,7 @@ const AdminProtectedLayout = async ({
   return (
     <div className="min-h-screen bg-sand-100 text-sand-900 md:flex">
       <AdminToaster />
-      <aside className="flex w-full flex-col justify-between bg-espresso-900 p-6 text-white md:min-h-screen md:w-72 md:shrink-0">
+      <aside className="flex w-full flex-col justify-between bg-espresso-900 p-6 text-white md:sticky md:top-0 md:h-screen md:w-72 md:shrink-0 md:overflow-y-auto">
         <div>
           <Link
             href="/admin"
