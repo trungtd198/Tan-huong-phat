@@ -9,6 +9,7 @@ import {
   MapPin,
   UserCircle2,
 } from 'lucide-react';
+import Link from 'next/link';
 
 import { SiteLayout } from '@/components/layouts/SiteLayout';
 import { PageHero } from '@/components/sections/PageHero';
@@ -27,16 +28,8 @@ const companyCards = [
     label: 'Tên công ty',
     value: 'Công ty Cổ phần Mỹ phẩm Thiên nhiên Tân Hương Phát',
   },
-  {
-    icon: UserCircle2,
-    label: 'Giám đốc đại diện',
-    value: 'Giáp Thị Hương',
-  },
-  {
-    icon: Coins,
-    label: 'Vốn điều lệ',
-    value: '3.000.000.000 đồng',
-  },
+  { icon: UserCircle2, label: 'Giám đốc đại diện', value: 'Giáp Thị Hương' },
+  { icon: Coins, label: 'Vốn điều lệ', value: '3.000.000.000 đồng' },
   {
     icon: MapPin,
     label: 'Địa chỉ trụ sở',
@@ -88,40 +81,73 @@ const AboutPage = async () => {
         title={heroBanner.title}
         subtitle={heroBanner.subtitle}
         imageUrl={heroBanner.imageUrl ?? undefined}
+        overline="VỀ CHÚNG TÔI"
+        breadcrumb={[
+          { label: 'Trang chủ', href: '/' },
+          { label: 'Về chúng tôi' },
+        ]}
       />
 
-      {/* ── Thông tin công ty ── */}
-      <section className="bg-white py-20 sm:py-24 lg:py-28">
+      {/* ── Stats Bar ── */}
+      <div className="bg-charcoal-900 py-10">
+        <Container>
+          <div className="grid grid-cols-2 gap-8 text-center sm:grid-cols-4">
+            {[
+              { value: '10+', label: 'Năm kinh nghiệm', sub: 'Trong ngành' },
+              {
+                value: '1000+',
+                label: 'Salon & Đối tác',
+                sub: 'Trên toàn quốc',
+              },
+              { value: '63', label: 'Tỉnh thành', sub: 'Phân phối' },
+              {
+                value: '100%',
+                label: 'Cam kết chính hãng',
+                sub: '& Chất lượng',
+              },
+            ].map((stat) => (
+              <div key={stat.label} className="space-y-1">
+                <p className="text-3xl font-bold text-amber-500 sm:text-4xl">
+                  {stat.value}
+                </p>
+                <p className="text-sm font-semibold text-white">{stat.label}</p>
+                <p className="text-xs text-white/50">{stat.sub}</p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </div>
+
+      {/* ── Company Info ── */}
+      <section className="bg-white py-16 sm:py-20">
         <Container>
           <div className="mx-auto max-w-4xl">
-            {/* Section header */}
             <div className="mb-12 text-center">
-              <span className="text-xs font-bold uppercase tracking-widest text-gold-600">
-                Hồ sơ thương hiệu
-              </span>
-              <h2 className="mt-2 font-display text-3xl font-bold text-brand-900 sm:text-4xl">
+              <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-amber-600">
+                HỒ SƠ THƯƠNG HIỆU
+              </p>
+              <h2 className="mt-3 text-3xl font-bold text-charcoal-900 sm:text-4xl">
                 Thông tin công ty
               </h2>
-              <div className="mx-auto mt-4 h-px w-12 bg-gold-300" />
+              <div className="mx-auto mt-4 h-[3px] w-12 rounded-full bg-amber-500" />
             </div>
 
-            {/* Company info cards grid */}
             <div className="grid gap-5 sm:grid-cols-2">
               {companyCards.map((item) => {
                 const Icon = item.icon;
                 return (
                   <div
                     key={item.label}
-                    className="hover:border-gold-200 flex gap-4 rounded-2xl border border-sand-100 bg-white p-5 shadow-sm transition-all duration-300 hover:shadow-md"
+                    className="flex gap-4 rounded-2xl bg-ivory-100 p-5 transition-all duration-300 hover:shadow-md"
                   >
-                    <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-sand-50 text-gold-500">
+                    <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-white text-amber-500 shadow-sm">
                       <Icon className="size-5" />
                     </div>
                     <div>
-                      <p className="text-[10px] font-bold uppercase tracking-wider text-sand-400">
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-charcoal-700/50">
                         {item.label}
                       </p>
-                      <p className="mt-1 text-sm font-semibold text-brand-900">
+                      <p className="mt-1 text-sm font-semibold text-charcoal-900">
                         {item.value}
                       </p>
                     </div>
@@ -133,30 +159,40 @@ const AboutPage = async () => {
         </Container>
       </section>
 
-      {/* ── Tầm nhìn & Sứ mệnh ── */}
-      <section className="border-y border-sand-100 bg-sand-50 py-20 sm:py-24">
+      {/* ── Vision & Mission ── */}
+      <section className="bg-ivory-100 py-16 sm:py-20">
         <Container>
+          <div className="mb-12 text-center">
+            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-amber-600">
+              NGUYÊN LÝ VẬN HÀNH
+            </p>
+            <h2 className="mt-3 text-3xl font-bold text-charcoal-900 sm:text-4xl">
+              Tầm nhìn & Sứ mệnh
+            </h2>
+            <div className="mx-auto mt-4 h-[3px] w-12 rounded-full bg-amber-500" />
+          </div>
+
           <div className="grid gap-8 md:grid-cols-2">
             {visionMission.map((item) => {
               const Icon = item.icon;
               return (
                 <article
                   key={item.title}
-                  className="hover:border-gold-200 flex flex-col justify-between rounded-2xl border border-sand-100 bg-white p-8 shadow-sm transition-all duration-300 hover:shadow-md"
+                  className="flex flex-col justify-between rounded-2xl border-l-4 border-amber-500 bg-white p-8 shadow-sm transition-all duration-300 hover:shadow-md"
                 >
                   <div className="space-y-4">
-                    <div className="flex size-12 items-center justify-center rounded-xl bg-sand-50 text-gold-500">
+                    <div className="flex size-12 items-center justify-center rounded-xl bg-ivory-100 text-amber-500">
                       <Icon className="size-5" />
                     </div>
-                    <h3 className="font-display text-2xl font-bold text-brand-900">
+                    <h3 className="text-xl font-bold text-charcoal-900">
                       {item.title}
                     </h3>
-                    <p className="text-sm leading-relaxed text-sand-600">
+                    <p className="text-sm leading-relaxed text-charcoal-800/60">
                       {item.description}
                     </p>
                   </div>
-                  <div className="mt-6 border-t border-sand-50 pt-6 text-right">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-gold-500">
+                  <div className="mt-6 border-t border-ivory-200 pt-6 text-right">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-amber-600">
                       {item.tag}
                     </span>
                   </div>
@@ -167,46 +203,79 @@ const AboutPage = async () => {
         </Container>
       </section>
 
-      {/* ── Cam kết chất lượng ── */}
-      <section className="bg-white py-20 sm:py-24">
+      {/* ── Quality Commitment ── */}
+      <section className="bg-white py-16 sm:py-20">
         <Container>
-          <div className="mx-auto max-w-4xl text-center">
-            <span className="text-xs font-bold uppercase tracking-widest text-gold-600">
-              Nguyên lý vận hành
-            </span>
-            <h2 className="mt-2 font-display text-3xl font-bold text-brand-900 sm:text-4xl">
+          <div className="mx-auto mb-12 max-w-4xl text-center">
+            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-amber-600">
+              ĐẢM BẢO CHẤT LƯỢNG
+            </p>
+            <h2 className="mt-3 text-3xl font-bold text-charcoal-900 sm:text-4xl">
               Cam kết chất lượng
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-sm text-sand-500">
+            <div className="mx-auto mt-4 h-[3px] w-12 rounded-full bg-amber-500" />
+            <p className="mx-auto mt-5 max-w-xl text-sm text-charcoal-800/60">
               Tại Tân Hương Phát, chất lượng không chỉ là lời hứa mà là kim chỉ
               nam hoạt động. Mỗi sản phẩm đều được kiểm định nghiêm ngặt trước
               khi trao tới tay bạn.
             </p>
           </div>
 
-          <div className="mx-auto mt-12 grid max-w-4xl gap-6 md:grid-cols-2">
+          <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
             {commitments.map((item) => {
               const Icon = item.icon;
               return (
                 <article
                   key={item.title}
-                  className="hover:border-gold-200 rounded-2xl border border-sand-100 bg-white p-6 text-left shadow-sm transition-all duration-300 hover:shadow-md"
+                  className="rounded-2xl bg-ivory-100 p-6 text-left transition-all duration-300 hover:shadow-md"
                 >
-                  <div className="mb-3 flex size-10 items-center justify-center rounded-xl bg-sand-50 text-gold-500">
+                  <div className="mb-3 flex size-10 items-center justify-center rounded-xl bg-white text-amber-500 shadow-sm">
                     <Icon className="size-5" />
                   </div>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-gold-500">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-amber-600">
                     {item.tag}
                   </span>
-                  <h4 className="mt-2 text-base font-semibold text-brand-900">
+                  <h4 className="mt-2 text-base font-semibold text-charcoal-900">
                     {item.title}
                   </h4>
-                  <p className="mt-2 text-sm leading-relaxed text-sand-600">
+                  <p className="mt-2 text-sm leading-relaxed text-charcoal-800/60">
                     {item.description}
                   </p>
                 </article>
               );
             })}
+          </div>
+        </Container>
+      </section>
+
+      {/* ── Partner CTA ── */}
+      <section className="bg-charcoal-900 py-14 sm:py-16">
+        <Container>
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-amber-500">
+              HỢP TÁC CÙNG CHÚNG TÔI
+            </p>
+            <h2 className="mt-3 text-2xl font-bold text-white sm:text-3xl">
+              Trở thành đối tác phân phối
+            </h2>
+            <p className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-white/60">
+              Tân Hương Phát luôn tìm kiếm những đối tác tin cậy để cùng phát
+              triển ngành chăm sóc tóc Việt Nam.
+            </p>
+            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+              <Link
+                href="/contact"
+                className="rounded-xl bg-amber-500 px-8 py-3.5 text-sm font-bold uppercase tracking-wide text-white shadow-md transition-all duration-300 hover:bg-amber-600 hover:shadow-lg"
+              >
+                Liên hệ hợp tác
+              </Link>
+              <Link
+                href="/products"
+                className="rounded-xl border border-white/20 px-8 py-3.5 text-sm font-semibold text-white/80 transition-all duration-300 hover:border-white/50 hover:text-white"
+              >
+                Xem sản phẩm
+              </Link>
+            </div>
           </div>
         </Container>
       </section>

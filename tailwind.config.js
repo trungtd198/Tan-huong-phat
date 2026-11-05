@@ -4,6 +4,32 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // ── NEW DESIGN SYSTEM (Gold-Black-Ivory) ──
+        // Ivory — warm cream backgrounds
+        ivory: {
+          50: '#FDFAF4',
+          100: '#F5F0E8',
+          200: '#EDE5D4',
+          300: '#E0D4BC',
+        },
+        // Charcoal — primary dark text & buttons
+        charcoal: {
+          700: '#3D3D3D',
+          800: '#2C2C2C',
+          900: '#1A1A1A',
+        },
+        // Amber — gold accent (replaces gold.*)
+        amber: {
+          50: '#FDF8EC',
+          100: '#FAF0D0',
+          200: '#F4E0A0',
+          300: '#E8D08A',
+          400: '#D4A843',
+          500: '#C9A84C',
+          600: '#B8962E',
+          700: '#9A7D22',
+        },
+        // ── LEGACY TOKENS (kept for backward compat) ──
         // Brand — Deep Green
         brand: {
           50: '#eef6f3',
@@ -38,7 +64,7 @@ module.exports = {
           800: '#253f38',
           900: '#1F3D35',
         },
-        // Accent — Gold
+        // Accent — Gold (legacy)
         gold: {
           300: '#ead17b',
           400: '#dfbf54',

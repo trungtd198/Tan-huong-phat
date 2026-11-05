@@ -29,7 +29,7 @@ const HeroEditorialCard = () => (
         <div className="relative mx-auto flex w-full max-w-md items-end justify-center gap-4 pt-10">
           <div className="relative h-52 w-28 rounded-[2rem] rounded-t-[2.8rem] bg-gradient-to-b from-sand-100 to-sand-300 shadow-xl shadow-black/10">
             <div className="absolute inset-x-5 top-5 h-6 rounded-full bg-white/60" />
-            <div className="absolute inset-x-7 top-16 h-24 rounded-[1.5rem] border border-white/60 bg-white/30" />
+            <div className="absolute inset-x-7 top-16 h-24 rounded-3xl border border-white/60 bg-white/30" />
             <div className="absolute inset-x-0 bottom-8 text-center font-display text-2xl text-sand-800">
               THP
             </div>

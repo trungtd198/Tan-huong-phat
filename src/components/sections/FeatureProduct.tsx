@@ -33,7 +33,7 @@ const FeatureProduct = ({ productGroup }: FeatureProductProps) => {
 
   const benefits =
     (activeProduct?.benefits?.length ?? 0) > 0
-      ? activeProduct?.benefits ?? []
+      ? (activeProduct?.benefits ?? [])
       : productGroup.benefits;
 
   const activeIndex = productThumbs.findIndex(

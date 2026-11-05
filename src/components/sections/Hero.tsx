@@ -24,7 +24,7 @@ const Hero = ({ title, subtitle, imageUrl, ctaHref, ctaLabel }: HeroProps) => (
   <section className="relative flex min-h-[44rem] overflow-hidden bg-brand-100 pt-20 sm:min-h-[48rem] lg:min-h-[54rem]">
     <div className="flex w-full flex-col lg:flex-row">
       {/* ── LEFT: Hero image ── */}
-      <div className="relative min-h-[24rem] w-full shrink-0 lg:min-h-full lg:w-[54%]">
+      <div className="relative min-h-96 w-full shrink-0 lg:min-h-full lg:w-[54%]">
         <Image
           src={imageUrl}
           alt={title}
