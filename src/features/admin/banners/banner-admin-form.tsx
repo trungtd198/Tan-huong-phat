@@ -12,10 +12,7 @@ type ProductLineOption = {
 };
 
 type BannerTarget =
-  | 'HOME_HERO'
-  | 'PRODUCTS_HERO'
-  | 'ABOUT_HERO'
-  | 'PRODUCT_LINE';
+  'HOME_HERO' | 'PRODUCTS_HERO' | 'ABOUT_HERO' | 'PRODUCT_LINE';
 
 type EditableBanner = {
   id: string;

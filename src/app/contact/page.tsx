@@ -12,161 +12,188 @@ export const metadata = {
     'Liên hệ Tân Hương Phát để được hỗ trợ sản phẩm và trao đổi hợp tác.',
 };
 
-const contactItems = [
-  {
-    icon: Phone,
-    label: 'Điện thoại',
-    value: siteConfig.phone,
-    sub: 'Hỗ trợ miễn phí 24/7',
-    href: `tel:${siteConfig.phoneRaw}`,
-    span: false,
-  },
-  {
-    icon: Mail,
-    label: 'Email',
-    value: siteConfig.email,
-    sub: 'Giải đáp nhanh chóng',
-    href: `mailto:${siteConfig.email}`,
-    span: false,
-  },
-  {
-    icon: MapPin,
-    label: 'Trụ sở',
-    value: siteConfig.address,
-    sub: null,
-    href: null,
-    span: true,
-  },
-  {
-    icon: Clock,
-    label: 'Giờ hoạt động',
-    value: 'Thứ Hai - Thứ Bảy: 08:00 - 17:00',
-    sub: 'Nghỉ Chủ nhật và các ngày lễ Tết',
-    href: null,
-    span: true,
-  },
-];
-
 const ContactPage = () => (
   <SiteLayout activeHref="/contact">
     <PageHero
-      title="Liên hệ"
-      subtitle="Chúng tôi luôn sẵn sàng lắng nghe. Hãy gửi tin nhắn và đội ngũ tư vấn viên của Tân Hương Phát sẽ phản hồi tới bạn sớm nhất có thể."
+      title="Liên hệ & Hợp tác"
+      subtitle="Chúng tôi luôn sẵn sàng lắng nghe. Hãy gửi tin nhắn và đội ngũ tư vấn viên của Tân Hương Phát sẽ phản hồi sớm nhất."
+      overline="LIÊN HỆ VỚI CHÚNG TÔI"
+      breadcrumb={[{ label: 'Trang chủ', href: '/' }, { label: 'Liên hệ' }]}
     />
 
-    <section className="bg-white py-20 sm:py-24 lg:py-28">
+    {/* ── Main contact section ── */}
+    <section className="bg-white py-16 sm:py-20 lg:py-24">
       <Container>
-        <div className="grid gap-12 lg:grid-cols-12">
-          {/* ── Left: Contact Form ── */}
-          <div className="lg:col-span-6">
-            <div className="rounded-3xl border border-sand-100 bg-white p-6 shadow-sm sm:p-8">
-              <h2 className="font-display text-2xl font-bold text-brand-900">
-                Gửi tin nhắn cho chúng tôi
-              </h2>
-              <p className="mt-1 text-xs text-sand-400">
-                Vui lòng để lại thông tin, chúng tôi sẽ tư vấn nhanh chóng.
+        <div className="grid gap-8 lg:grid-cols-12">
+          {/* LEFT: Dark info card */}
+          <div className="lg:col-span-5">
+            <div className="sticky top-24 rounded-2xl bg-charcoal-900 p-8 text-white sm:p-10">
+              <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-amber-500">
+                THÔNG TIN
               </p>
+              <h2 className="mt-3 text-2xl font-bold text-white">
+                Liên hệ trực tiếp
+              </h2>
+              <div className="mt-4 h-[3px] w-10 rounded-full bg-amber-500" />
 
-              <ContactForm />
+              <div className="mt-8 space-y-6">
+                {/* Phone */}
+                <a
+                  href={`tel:${siteConfig.phoneRaw}`}
+                  className="group flex items-start gap-4"
+                >
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-amber-500 transition group-hover:bg-amber-500 group-hover:text-white">
+                    <Phone className="size-5" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">
+                      Điện thoại
+                    </p>
+                    <p className="mt-0.5 text-sm font-semibold text-white">
+                      {siteConfig.phone}
+                    </p>
+                    <p className="text-xs text-white/40">
+                      Hỗ trợ T2 - T7, 08:00 - 17:30
+                    </p>
+                  </div>
+                </a>
+
+                {/* Email */}
+                <a
+                  href={`mailto:${siteConfig.email}`}
+                  className="group flex items-start gap-4"
+                >
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-amber-500 transition group-hover:bg-amber-500 group-hover:text-white">
+                    <Mail className="size-5" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">
+                      Email
+                    </p>
+                    <p className="mt-0.5 text-sm font-semibold text-white">
+                      {siteConfig.email}
+                    </p>
+                    <p className="text-xs text-white/40">
+                      Giải đáp trong vòng 24h
+                    </p>
+                  </div>
+                </a>
+
+                {/* Address */}
+                <div className="flex items-start gap-4">
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-amber-500">
+                    <MapPin className="size-5" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">
+                      Địa chỉ
+                    </p>
+                    <p className="mt-0.5 text-sm font-semibold leading-relaxed text-white">
+                      {siteConfig.address}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Working hours */}
+                <div className="flex items-start gap-4">
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-amber-500">
+                    <Clock className="size-5" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">
+                      Giờ làm việc
+                    </p>
+                    <p className="mt-0.5 text-sm font-semibold text-white">
+                      Thứ Hai – Thứ Bảy
+                    </p>
+                    <p className="text-xs text-white/60">
+                      08:00 – 17:30 (Nghỉ CN & lễ)
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Social */}
+              <div className="mt-10 border-t border-white/10 pt-8">
+                <p className="mb-4 text-[10px] font-bold uppercase tracking-widest text-white/40">
+                  KẾT NỐI VỚI CHÚNG TÔI
+                </p>
+                <div className="flex gap-3">
+                  {[
+                    {
+                      label: 'Facebook',
+                      href: siteConfig.facebook || '#',
+                      icon: 'FB',
+                    },
+                    {
+                      label: 'Zalo',
+                      href: siteConfig.zalo || '#',
+                      icon: 'ZL',
+                    },
+                    {
+                      label: 'YouTube',
+                      href: 'https://youtube.com',
+                      icon: 'YT',
+                    },
+                  ].map((s) => (
+                    <a
+                      key={s.label}
+                      href={s.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={s.label}
+                      className="flex size-10 items-center justify-center rounded-lg bg-white/10 text-xs font-bold text-white/70 transition hover:bg-amber-500 hover:text-white"
+                    >
+                      {s.icon}
+                    </a>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* ── Right: Contact Info ── */}
-          <div className="space-y-8 lg:col-span-6">
-            <div>
-              <h2 className="font-display text-2xl font-bold text-brand-900">
-                Thông tin liên hệ
-              </h2>
-              <p className="mt-1 text-xs text-sand-400">
-                Các phương thức liên lạc trực tiếp tới Tân Hương Phát
+          {/* RIGHT: Form */}
+          <div className="lg:col-span-7">
+            <div className="rounded-2xl bg-ivory-100 p-8 sm:p-10">
+              <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-amber-600">
+                GỬI TIN NHẮN
               </p>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {contactItems.map((item) => {
-                const Icon = item.icon;
-                const content = (
-                  <div
-                    key={item.label}
-                    className={[
-                      'flex gap-4 rounded-2xl border border-sand-100 bg-white p-5 shadow-sm transition-all duration-300 hover:border-gold-200 hover:shadow-md',
-                      item.span ? 'sm:col-span-2' : '',
-                    ].join(' ')}
-                  >
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-sand-50 text-gold-500">
-                      <Icon className="size-5" />
-                    </div>
-                    <div className="space-y-0.5">
-                      <p className="text-[9px] font-bold uppercase tracking-widest text-sand-400">
-                        {item.label}
-                      </p>
-                      <p className="text-xs font-bold text-brand-900">
-                        {item.value}
-                      </p>
-                      {item.sub && (
-                        <p className="text-[10px] text-sand-400">{item.sub}</p>
-                      )}
-                    </div>
-                  </div>
-                );
-
-                return item.href ? (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    className={item.span ? 'sm:col-span-2' : ''}
-                  >
-                    {content}
-                  </a>
-                ) : (
-                  <div
-                    key={item.label}
-                    className={item.span ? 'sm:col-span-2' : ''}
-                  >
-                    {content}
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Location card */}
-            <div className="border-gold-200/40 relative overflow-hidden rounded-3xl border bg-sand-50 p-8 text-center shadow-sm">
-              <div className="bg-gold-100/40 pointer-events-none absolute -bottom-10 -right-10 size-40 rounded-full blur-2xl" />
-              <div className="relative z-10 space-y-3">
-                <div className="border-gold-200 mx-auto flex size-14 items-center justify-center rounded-full border bg-white text-gold-500 shadow-sm">
-                  <MapPin className="size-6" />
-                </div>
-                <h4 className="font-display text-lg font-bold text-brand-900">
-                  Ghé thăm địa chỉ của chúng tôi
-                </h4>
-                <p className="mx-auto max-w-sm text-xs leading-relaxed text-sand-500">
-                  {siteConfig.address}
-                </p>
-                <a
-                  href={`https://maps.google.com/?q=${encodeURIComponent(siteConfig.address)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-gold-600 transition-colors hover:text-brand-900"
-                >
-                  Xem bản đồ chi tiết
-                  <svg
-                    className="size-3"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </a>
+              <h2 className="mt-3 text-2xl font-bold text-charcoal-900">
+                Chúng tôi luôn lắng nghe
+              </h2>
+              <div className="mt-4 h-[3px] w-10 rounded-full bg-amber-500" />
+              <p className="mt-4 text-sm text-charcoal-800/60">
+                Vui lòng để lại thông tin, đội ngũ tư vấn sẽ liên hệ bạn trong
+                thời gian sớm nhất.
+              </p>
+              <div className="mt-8">
+                <ContactForm />
               </div>
             </div>
           </div>
         </div>
+      </Container>
+    </section>
+
+    {/* ── Map section ── */}
+    <section className="bg-ivory-100 py-12">
+      <Container>
+        <div className="overflow-hidden rounded-2xl shadow-sm">
+          <iframe
+            title="Tân Hương Phát Location"
+            src={`https://maps.google.com/maps?q=${encodeURIComponent('475/6E/15 Bạch Đằng, Tân Sơn Hòa, Tân Bình, TP.HCM')}&output=embed`}
+            width="100%"
+            height="360"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            className="w-full"
+          />
+        </div>
+        <p className="mt-4 text-center text-xs text-charcoal-700/50">
+          📍 {siteConfig.address}
+        </p>
       </Container>
     </section>
   </SiteLayout>

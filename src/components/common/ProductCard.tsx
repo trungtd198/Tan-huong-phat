@@ -32,7 +32,7 @@ const ProductCard = ({
       <div className="relative flex size-full items-center justify-center">
         <div className="relative h-[72%] w-36 rounded-[2.25rem] rounded-t-[3rem] bg-gradient-to-b from-white via-sand-100 to-sand-300 shadow-lg shadow-sand-900/10">
           <div className="absolute inset-x-7 top-5 h-7 rounded-full bg-white/70" />
-          <div className="absolute inset-x-8 top-20 h-32 rounded-[1.5rem] border border-white/70 bg-white/35" />
+          <div className="absolute inset-x-8 top-20 h-32 rounded-3xl border border-white/70 bg-white/35" />
           <div className="absolute inset-x-0 bottom-10 text-center font-display text-4xl text-sand-700">
             {product.name.charAt(0)}
           </div>

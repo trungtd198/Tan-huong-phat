@@ -7,12 +7,7 @@ import type {
 import { cn } from '@/lib/utils';
 
 type ButtonVariant =
-  | 'primary'
-  | 'secondary'
-  | 'outline'
-  | 'ghost'
-  | 'cta'
-  | 'gold';
+  'primary' | 'secondary' | 'outline' | 'ghost' | 'cta' | 'gold';
 
 type ButtonSize = 'sm' | 'md' | 'lg' | 'xl';
 
